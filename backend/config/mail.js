@@ -8,7 +8,7 @@ export const sendOtpEmail = async (email, otp) => {
 
     const data = await resend.emails.send({
       from: "Prep AI <onboarding@resend.dev>",
-      to: "anshtyagi3293@gmail.com", // ONLY YOUR EMAIL FOR TESTING
+      to: "anshtyagi1118@gmail.com", // ONLY YOUR EMAIL FOR TESTING
       subject: "OTP Verification",
       html: `
         <div style="font-family:sans-serif">

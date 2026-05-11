@@ -1,25 +1,27 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOtpEmail = async (email, otp) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+    console.log("SENDING EMAIL WITH RESEND");
+
+    const data = await resend.emails.send({
+      from: "Prep AI <onboarding@resend.dev>",
+      to: "anshtyagi3293@gmail.com", // ONLY YOUR EMAIL FOR TESTING
+      subject: "OTP Verification",
+      html: `
+        <div style="font-family:sans-serif">
+          <h2>Your OTP Code</h2>
+          <h1>${otp}</h1>
+          <p>This OTP expires in 10 minutes.</p>
+        </div>
+      `,
     });
 
-    const info = await transporter.sendMail({
-      from: `"MERN Auth" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: "Your OTP Code",
-      text: `Your OTP is: ${otp}`,
-      html: `<h2>Thanks for joining! Your verification code is ${otp}</h2>`
-    });
+    console.log("EMAIL SENT:", data);
 
-    console.log("EMAIL SENT:", info.response);
   } catch (error) {
-    console.log("EMAIL ERROR:", error);
+    console.log("RESEND ERROR:", error);
   }
 };
